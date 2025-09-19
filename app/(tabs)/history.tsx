@@ -22,7 +22,6 @@ interface ScanHistoryItem {
   isUrl?: boolean;
 }
 
-// Mock history data
 const MOCK_HISTORY: ScanHistoryItem[] = [
   {
     id: '1',

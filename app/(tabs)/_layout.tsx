@@ -11,11 +11,8 @@ import { View, Platform } from 'react-native';
 
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { useColorScheme } from '@/hooks/use-color-scheme';
-
-// Define SFSymbols6_0 type
 type SFSymbols6_0 = 'house' | 'house.fill' | 'clock' | 'clock.fill';
 
-// Animated Tab Icon Component
 function AnimatedTabIcon({
   name,
   focusedName,
@@ -116,7 +113,7 @@ export default function TabLayout() {
         },
         animation: 'shift', 
         lazy: false, // 
-        unmountOnBlur: false, // <- keep screen state when switching
+        unmountOnBlur: false,
       } as import('@react-navigation/bottom-tabs').BottomTabNavigationOptions}
     >
       <Tabs.Screen

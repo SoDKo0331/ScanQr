@@ -1,5 +1,5 @@
 import React, { useState, useRef, useCallback } from "react";
-import { View, StatusBar, Alert, Vibration } from "react-native";
+import { View, StatusBar, Alert, Vibration, TouchableOpacity, Text } from "react-native";
 import { CameraView, useCameraPermissions } from "expo-camera";
 import { router } from "expo-router";
 import * as ImagePicker from "expo-image-picker";
@@ -10,6 +10,7 @@ import QRScannerOverlay from "@/components/QRScannerOverlay";
 import QRScannerControls from "@/components/QRScannerControls";
 import QRScannerSuccess from "@/components/QRScannerSuccess";
 import { useColorScheme } from "@/hooks/use-color-scheme";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function QRScannerScreen() {
   const [imageUri, setImageUri] = useState<string | null>(null);
@@ -27,10 +28,10 @@ export default function QRScannerScreen() {
       Alert.alert("Зөвшөөрөл шаардлагатай", "Зургийн сангаас авах зөвшөөрөл өгөх шаардлагатай.");
       return;
     }
-    const pickImage = async () => {
-        const result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ["images" , "videos"],
-        });
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ["images"],
+    });
 
     if (!result.canceled) {
       setImageUri(result.assets[0].uri);
@@ -46,6 +47,9 @@ export default function QRScannerScreen() {
         const response = await fetch("http://YOUR_BACKEND_URL/api/upload-qr", {
           method: "POST",
           body: formData,
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         });
 
         const res = await response.json();
@@ -70,7 +74,7 @@ export default function QRScannerScreen() {
       Vibration.vibrate(100);
 
       try {
-        const response = await fetch("http://YOUR_BACKEND_URL/api/check-qr", {
+        const response = await fetch("http://YOUR_BACKEND_URL/api/scan-qr", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ qrCode: scannedData }),
@@ -94,15 +98,34 @@ export default function QRScannerScreen() {
   );
 
   const toggleFlash = () => setIsFlashOn(!isFlashOn);
+
   const resetScanner = () => {
     setScanned(false);
     setData("");
   };
+
   if (!permission) return <CameraPermissionLoading isDark={isDark} />;
 
   return (
-    <View style={{ flex: 1, backgroundColor: "#000" }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#000" }}>
       <StatusBar barStyle="light-content" translucent />
+
+      <TouchableOpacity
+        onPress={() => router.back()}
+        style={{
+          position: "absolute",
+          top: 50,
+          left: 20,
+          zIndex: 10,
+          backgroundColor: "rgba(255, 255, 255, 0.6)",
+          padding: 10,
+          borderRadius: 20,
+
+        }}
+      >
+        <Text style={{ color: "#fff", fontSize: 18, fontWeight: "600" }}>✕</Text>
+      </TouchableOpacity>
+
       {!permission.granted ? (
         <CameraPermissionDenied isDark={isDark} requestPermission={requestPermission} />
       ) : (
@@ -128,7 +151,6 @@ export default function QRScannerScreen() {
           {scanned && <QRScannerSuccess />}
         </>
       )}
-    </View>
-  );    
-}
+    </SafeAreaView>
+  );
 }

@@ -3,11 +3,11 @@ import { StyleSheet, View, TouchableOpacity, StatusBar, Platform , Text } from "
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { SafeAreaView } from "react-native-safe-area-context";
-
+import { SafeAreaProvider , useSafeAreaInsets } from "react-native-safe-area-context";
 function HomeScreen() {
   const colorScheme = useColorScheme();
   const isDark = colorScheme === 'dark';
-
+  const insets = useSafeAreaInsets();
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: isDark ? '#121212' : '#F5F5F5' }]}>
     <View>
