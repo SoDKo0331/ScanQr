@@ -1,98 +1,97 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import { Link } from "expo-router";
+import { StyleSheet, View, TouchableOpacity, StatusBar, Platform , Text } from "react-native";
+import { useColorScheme } from "@/hooks/use-color-scheme";
+import { IconSymbol } from "@/components/ui/icon-symbol";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-import { HelloWave } from '@/components/hello-wave';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { Link } from 'expo-router';
+function HomeScreen() {
+  const colorScheme = useColorScheme();
+  const isDark = colorScheme === 'dark';
 
-export default function HomeScreen() {
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <Link href="/modal">
-          <Link.Trigger>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-          </Link.Trigger>
-          <Link.Preview />
-          <Link.Menu>
-            <Link.MenuAction title="Action" icon="cube" onPress={() => alert('Action pressed')} />
-            <Link.MenuAction
-              title="Share"
-              icon="square.and.arrow.up"
-              onPress={() => alert('Share pressed')}
-            />
-            <Link.Menu title="More" icon="ellipsis">
-              <Link.MenuAction
-                title="Delete"
-                icon="trash"
-                destructive
-                onPress={() => alert('Delete pressed')}
-              />
-            </Link.Menu>
-          </Link.Menu>
-        </Link>
+    <SafeAreaView style={[styles.container, { backgroundColor: isDark ? '#121212' : '#F5F5F5' }]}>
+    <View>
+      <StatusBar barStyle={isDark ? 'light-content' : 'dark-content'} />
+      
+      <View style={styles.header}>
+        <Text style={[styles.title, { color: isDark ? '#FFFFFF' : '#000000' }]}>
+          QR Код Уншуулах
+        </Text>
+      </View>
 
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
-  );
+      <View style={styles.buttonContainer}>
+        <Link href="/QRScannerScreen" asChild>
+          <TouchableOpacity 
+            style={[styles.primaryButton, { backgroundColor: isDark ? '#BB86FC' : '#6200EE' }]}
+            activeOpacity={0.8}
+          >
+            <IconSymbol 
+              name="qrcode.viewfinder" 
+              size={100} 
+              color="#dfdcdcff" 
+              style={styles.buttonIcon}
+            />
+            
+          </TouchableOpacity>
+        </Link>
+      </View>
+    </View>
+    </SafeAreaView>
+);
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
+  container: {
+    flex: 1,
+    paddingHorizontal: 20,
+    paddingTop: 40,
+    justifyContent: 'center',
     alignItems: 'center',
-    gap: 8,
+    fontFamily: 'roboto-regularr',
   },
-  stepContainer: {
-    gap: 8,
+  header: {
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    textAlign: 'center',
     marginBottom: 8,
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  buttonContainer: {
+    alignItems: 'center',
+    marginBottom: 40,
+    shadowColor: '#6200EE',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.5,
+    shadowRadius: 6,
+    elevation: 8,
   },
+  primaryButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 16,
+    paddingHorizontal: 32,
+    borderRadius: 28,
+    elevation: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    minWidth: 200,
+    justifyContent: 'center',
+  },
+  buttonIcon: {
+    backgroundColor: '#6f19d8ff',
+    marginRight: 8,
+    borderRadius: 8,
+  },
+  subtitle : {
+    fontSize: 16,
+    textAlign: 'center',
+    marginTop: 4,
+  }
 });
+
+export default HomeScreen;
