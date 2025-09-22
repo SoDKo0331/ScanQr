@@ -48,3 +48,15 @@ Join our community of developers creating universal apps.
 
 - [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
 - [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+
+
+
+Commit Types:
+ feat: шинэ feature
+ fix: алдаа засах
+ docs: documentation өөрчлөлт
+ style: код форматтинг
+ refactor: код refactoring
+ perf: гүйцэтгэл сайжруулах
+ test: тест нэмэх эсвэл засах
+ chore: build process өөрчлөх
