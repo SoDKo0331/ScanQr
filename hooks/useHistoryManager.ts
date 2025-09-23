@@ -9,7 +9,6 @@ export const useHistoryManager = () => {
   const [isSelectionMode, setIsSelectionMode] = useState(false);
 
   useEffect(() => {
-    // Load history from storage - for now using mock data
     setHistory(MOCK_HISTORY);
   }, []);
 

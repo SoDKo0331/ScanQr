@@ -4,6 +4,7 @@ import {
   StyleSheet, 
   FlatList, 
   StatusBar,
+  RefreshControl,
 } from "react-native";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import { HistoryScreenProps, ScanHistoryItem } from '../../types/ScanHistoryTypes';
@@ -14,7 +15,15 @@ import { EmptyState } from '../../components/EmptyState';
 
 export default function HistoryScreen({}: HistoryScreenProps) {
   const colorScheme = useColorScheme();
-  const isDark = colorScheme === 'dark';
+  const isDark = colorScheme === "dark";
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
 
   const {
     history,
@@ -39,9 +48,9 @@ export default function HistoryScreen({}: HistoryScreenProps) {
   );
 
   return (
-    <View style={[styles.container, { backgroundColor: isDark ? '#121212' : '#F5F5F5' }]}>
-      <StatusBar barStyle={isDark ? 'light-content' : 'dark-content'} />
-      
+    <View style={[styles.container, { backgroundColor: isDark ? "#121212" : "#F5F5F5" }]}>
+      <StatusBar barStyle={isDark ? "light-content" : "dark-content"} />
+
       <HistoryHeader
         isDark={isDark}
         isSelectionMode={isSelectionMode}
@@ -51,17 +60,23 @@ export default function HistoryScreen({}: HistoryScreenProps) {
         onDeleteSelected={deleteSelectedItems}
         onClearAllHistory={clearAllHistory}
       />
-      {history.length === 0 ? (
-        <EmptyState isDark={isDark} />
-      ) : (
-        <FlatList
-          data={history}
-          keyExtractor={(item) => item.id}
-          renderItem={renderHistoryItem}
-          contentContainerStyle={styles.listContent}
-          showsVerticalScrollIndicator={false}
-        />
-      )}
+
+      <FlatList
+        data={history}
+        keyExtractor={(item) => item.id}
+        renderItem={renderHistoryItem}
+        contentContainerStyle={styles.listContent}
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            colors={["#b600eeff"]}
+            tintColor={isDark ? "#FFFFFF" : "#000000"}
+          />
+        }
+        ListEmptyComponent={<EmptyState isDark={isDark} />}
+      />
     </View>
   );
 }
@@ -69,8 +84,10 @@ export default function HistoryScreen({}: HistoryScreenProps) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    fontFamily: "nunito-sans-regular",
   },
   listContent: {
     padding: 16,
+    flexGrow: 1, // ensures EmptyState centers properly
   },
 });

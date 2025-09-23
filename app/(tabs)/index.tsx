@@ -55,9 +55,10 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: '400',
     textAlign: 'center',
     marginBottom: 8,
+    fontFamily: 'Nunito-sans-bold',
   },
   buttonContainer: {
     alignItems: 'center',

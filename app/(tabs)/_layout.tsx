@@ -102,6 +102,7 @@ export default function TabLayout() {
           shadowRadius: 8,
           borderTopLeftRadius: 20,
           borderTopRightRadius: 20,
+          fontfamily: 'Nunito-sans-regular',
         },
         tabBarLabelStyle: {
           fontSize: 12,

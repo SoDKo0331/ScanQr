@@ -42,7 +42,7 @@ export default function QRScannerScreen() {
         name: "upload.jpg",
         type: "image/jpeg",
       } as any);
-
+  
       try {
         const response = await fetch("http://YOUR_BACKEND_URL/api/upload-qr", {
           method: "POST",
@@ -54,7 +54,7 @@ export default function QRScannerScreen() {
 
         const res = await response.json();
         if (response.ok && res.success) {
-          router.push("/history");
+          router.push("/(tabs)/HistoryScreen");
         } else {
           Alert.alert("Алдаа", res.message || "QR код танигдсангүй");
         }
@@ -83,7 +83,7 @@ export default function QRScannerScreen() {
         const result = await response.json();
 
         if (response.ok && result.success) {
-          router.push("/history");
+          router.push("/HistoryScreen");
         } else {
           Alert.alert("QR код буруу байна", result.message || "Код олдсонгүй");
           setScanned(false);
@@ -96,6 +96,7 @@ export default function QRScannerScreen() {
     },
     [scanned]
   );
+
 
   const toggleFlash = () => setIsFlashOn(!isFlashOn);
 

@@ -3,6 +3,12 @@ import { Platform, StatusBar, StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    fontFamily: Platform.select({
+      ios: 'Nunito Sans',
+      android: 'Roboto',
+      default: 'System',
+    }),
+    backgroundColor: '#F9F9F9',
   },
   header: {
     paddingTop: Platform.OS === 'ios' ? 60 : StatusBar.currentHeight! + 20,

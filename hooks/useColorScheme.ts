@@ -6,6 +6,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#000000',
+    fontFamily: Platform.select({
+      ios: 'Nunito Sans',
+      android: 'Roboto',
+      default: 'System',
+    }),
   },
   camera: {
     flex: 1,
